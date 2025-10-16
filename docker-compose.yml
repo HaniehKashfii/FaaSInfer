@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  faasinfer:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/models
+      - ./cache:/var/faasinfer/ssd_cache
+    environment:
+      - RAY_ADDRESS=auto
+      - LOG_LEVEL=INFO
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
